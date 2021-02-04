@@ -38,21 +38,6 @@ function installAwsCdk(){
 	fi
 }
 
-function installEsbuild(){
-	echo "Installing esbuild..."
-	if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
-		yarn global add esbuild
-	else
-		yarn global add esbuild >/dev/null 2>&1
-	fi
-
-	if [ "${?}" -ne 0 ]; then
-		echo "Failed to install esbuild"
-	else
-		echo "Successfully installed esbuild"
-	fi
-}
-
 function runCdk(){
 	echo "Run cdk ${INPUT_CDK_SUBCOMMAND} ${INPUT_CDK_ARGS} \"${INPUT_CDK_STACK}\""
 	output=$(cdk --no-version-reporting ${INPUT_CDK_SUBCOMMAND} ${INPUT_CDK_ARGS} "${INPUT_CDK_STACK}" 2>&1)
@@ -91,7 +76,6 @@ function main(){
 	parseInputs
 	cd ${GITHUB_WORKSPACE}/${INPUT_WORKING_DIR}
 	installAwsCdk
-	installEsbuild
 	runCdk
 }
 
