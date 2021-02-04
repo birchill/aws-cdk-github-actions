@@ -1,7 +1,7 @@
 FROM alpine:3
 
-RUN apk --update --no-cache add nodejs nodejs-npm python3 py3-pip jq curl bash git docker && \
-	ln -sf /usr/bin/python3 /usr/bin/python
+RUN apk --update --no-cache add nodejs nodejs-npm jq curl bash git docker && \
+	npm install -g yarn
 
 COPY entrypoint.sh /entrypoint.sh
 
