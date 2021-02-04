@@ -3,7 +3,6 @@
 set -u
 
 function parseInputs(){
-	# Required inputs
 	if [ "${INPUT_CDK_SUBCOMMAND}" == "" ]; then
 		echo "Input cdk_subcommand cannot be empty"
 		exit 1
@@ -34,14 +33,29 @@ function installAwsCdk(){
 		if [ "${?}" -ne 0 ]; then
 			echo "Failed to install aws-cdk ${INPUT_CDK_VERSION}"
 		else
-			echo "Successful install aws-cdk ${INPUT_CDK_VERSION}"
+			echo "Successfully installed aws-cdk ${INPUT_CDK_VERSION}"
 		fi
+	fi
+}
+
+function installEsbuild(){
+	echo "Install esbuild"
+	if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
+		yarn global add esbuild
+	else
+		yarn global add esbuild >/dev/null 2>&1
+	fi
+
+	if [ "${?}" -ne 0 ]; then
+		echo "Failed to install esbuild"
+	else
+		echo "Successfully installed esbuild"
 	fi
 }
 
 function runCdk(){
 	echo "Run cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
-	output=$(cdk ${INPUT_CDK_SUBCOMMAND} ${*} "${INPUT_CDK_STACK}" 2>&1)
+	output=$(cdk ${INPUT_CDK_SUBCOMMAND} --ci ${*} "${INPUT_CDK_STACK}" 2>&1)
 	exitCode=${?}
 	echo ::set-output name=status_code::${exitCode}
 	echo "${output}"
@@ -77,6 +91,7 @@ function main(){
 	parseInputs
 	cd ${GITHUB_WORKSPACE}/${INPUT_WORKING_DIR}
 	installAwsCdk
+	installEsbuild
 	runCdk ${INPUT_CDK_ARGS}
 }
 
