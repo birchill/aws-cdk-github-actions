@@ -10,7 +10,7 @@ function parseInputs(){
 }
 
 function installAwsCdk(){
-	echo "Install aws-cdk ${INPUT_CDK_VERSION}"
+	echo "Installing aws-cdk (ver: ${INPUT_CDK_VERSION})..."
 	if [ "${INPUT_CDK_VERSION}" == "latest" ]; then
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
 			yarn global add aws-cdk
@@ -21,7 +21,7 @@ function installAwsCdk(){
 		if [ "${?}" -ne 0 ]; then
 			echo "Failed to install aws-cdk ${INPUT_CDK_VERSION}"
 		else
-			echo "Successful install aws-cdk ${INPUT_CDK_VERSION}"
+			echo "Successfully installed aws-cdk ${INPUT_CDK_VERSION}"
 		fi
 	else
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
@@ -39,7 +39,7 @@ function installAwsCdk(){
 }
 
 function installEsbuild(){
-	echo "Install esbuild"
+	echo "Installing esbuild..."
 	if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
 		yarn global add esbuild
 	else
